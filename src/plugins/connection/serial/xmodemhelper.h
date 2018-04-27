@@ -4,6 +4,7 @@
 #include <QByteArray>
 #include <QElapsedTimer>
 #include <QSerialPort>
+#include <stdint.h>
 
 class XmodemHelper
 {

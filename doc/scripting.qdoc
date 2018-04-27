@@ -105,9 +105,6 @@ to refer to the \l{SAM-BA API Reference} and
 \li \l{SAMBA Module}
 \li Contains common SAM-BA types and utilities
 \row
-\li \l{SAMBA.Connection.JLink Module}
-\li Contains support for connecting to devices using JTAG
-\row
 \li \l{SAMBA.Connection.Serial Module}
 \li Contains support for connection to devices using USB/Serial
 \row

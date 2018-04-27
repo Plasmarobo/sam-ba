@@ -22,6 +22,6 @@ int main(int argc, char *argv[])
 	qSetMessagePattern("%{message}");
 
 	SambaTool app(argc, argv);
-	QTimer::singleShot(0, &app, &SambaTool::run);
+	QTimer::singleShot(0, &app, SLOT(run()));
 	return app.exec();
 }

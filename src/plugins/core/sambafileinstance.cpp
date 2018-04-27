@@ -78,7 +78,8 @@ QByteArray SambaFileInstance::read(qint64 maxSize)
 	qint64 bpEnd = m_paddingBefore;
 	qint64 bpLen = std::max(0ll, std::min(bpEnd - offset, maxSize));
 	if (bpLen > 0) {
-		data.append(bpLen, m_paddingValue);
+		data.append(reinterpret_cast<const char*>(bpLen),
+							  m_paddingValue);
 		maxSize -= bpLen;
 		offset += bpLen;
 	}
@@ -125,7 +126,8 @@ QByteArray SambaFileInstance::read(qint64 maxSize)
 	qint64 apEnd = apStart + m_paddingAfter;
 	qint64 apLen = std::max(0ll, std::min(apEnd - offset, maxSize));
 	if (apLen > 0) {
-		data.append(apLen, m_paddingValue);
+		data.append(reinterpret_cast<const char*>(apLen),
+								m_paddingValue);
 		maxSize -= apLen;
 		offset += apLen;
 	}

@@ -46,6 +46,7 @@ public:
 	explicit SambaTool(int &argc, char **argv);
 	~SambaTool();
 
+public slots:
 	void run();
 
 private:

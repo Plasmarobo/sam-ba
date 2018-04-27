@@ -120,7 +120,7 @@ void SambaConnectionSerialHelper::open(qint32 maxChunkSize)
 	m_serial.setStopBits(QSerialPort::OneStop);
 	m_serial.setFlowControl(QSerialPort::NoFlowControl);
 
-	qCInfo(sambaLogConnSerial, "Opening serial port '%s'",
+	qCDebug(sambaLogConnSerial, "Opening serial port '%s'",
 			port().toLocal8Bit().constData());
 
 	if (m_serial.open(QIODevice::ReadWrite))
@@ -166,7 +166,7 @@ void SambaConnectionSerialHelper::open(qint32 maxChunkSize)
 
 void SambaConnectionSerialHelper::writeSerial(const QString &str)
 {
-	qCDebug(sambaLogConnSerial).noquote().nospace() << "SERIAL<<" << str;
+	qCDebug(sambaLogConnSerial).nospace() << "SERIAL<<" << str;
 
 	QByteArray data = str.toLocal8Bit();
 	m_serial.write(data.constData(), data.length());
@@ -175,7 +175,7 @@ void SambaConnectionSerialHelper::writeSerial(const QString &str)
 
 void SambaConnectionSerialHelper::writeSerial(const QByteArray &data)
 {
-	qCDebug(sambaLogConnSerial).noquote().nospace() << "SERIAL<<" << data.toHex();
+	qCDebug(sambaLogConnSerial).nospace() << "SERIAL<<" << data.toHex();
 
 	m_serial.write(data.constData(), data.length());
 	m_serial.waitForBytesWritten(10);
@@ -205,7 +205,7 @@ QByteArray SambaConnectionSerialHelper::readSerial(int len, int timeout)
 			resp.append(m_serial.read(qMin(available, len - resp.length())));
 	} while (resp.length() < len);
 
-	qCDebug(sambaLogConnSerial).noquote().nospace() << "SERIAL>>" << resp.toHex();
+	qCDebug(sambaLogConnSerial).nospace() << "SERIAL>>" << resp.toHex();
 
 	return resp;
 }
@@ -284,7 +284,7 @@ QByteArray SambaConnectionSerialHelper::read(quint32 address, int length, int ti
 		{
 			remaining = timeout - timer.elapsed();
 			if (remaining < 0) {
-				qCDebug(sambaLogConnSerial).noquote().nospace() << "SERIAL<< [read timeout]";
+				qCDebug(sambaLogConnSerial).nospace() << "SERIAL<< [read timeout]";
 				break;
 			}
 		}
