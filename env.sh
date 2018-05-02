@@ -6,6 +6,9 @@ export BUILD_DIR=$DIR/build
 export RELEASE_DIR=$DIR/bin
 
 export CROSS_COMPILER=/opt/qtrpi/bin/qmake-qtrpi
+# For x86_64 this should be set to /usr/lib/x86_64/qt5/qml
+# Otherwise to the QTPI directory
+export QML2_IMPORT_DIR=/opt/qtrpi/raspi/qt5pi/qml
 
 export PI_INSTALL_DIR=/home/pi/flash/sam-ba/
 export PI_HOSTNAME=austenflasher.local
