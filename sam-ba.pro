@@ -1,3 +1,3 @@
 TEMPLATE = subdirs
 
-SUBDIRS = src examples dist doc
+SUBDIRS = src dist
