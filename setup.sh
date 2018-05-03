@@ -18,7 +18,5 @@ $CROSS_COMPILER -r $DIR/sam-ba.pro
 make INSTALL_ROOT=$RELEASE_DIR install
 popd
 
-cp ./flash_dory.qml $RELEASE_DIR/flash_dory.qml
-
-rsync -rv $RELEASE_DIR/ $PI_USERNAME@$PI_HOSTNAME:$PI_INSTALL_DIR
+rsync -rvL $RELEASE_DIR/ $PI_USERNAME@$PI_HOSTNAME:$PI_INSTALL_DIR
 
