@@ -3,6 +3,8 @@
 
 ## Pre-requisites
 
+Note: `setup.sh` will automatically install the latest qt supported by your system. It is possible a newer version may introduce breaking changes. QTPI will (at the time of this writing) install QT 5.7 or 5.6 to the Raspberry Pi.
+
 - Qt 5.5.1
 
   Download from [qt.io](http://www.qt.io/download-open-source/#section-3).
@@ -35,6 +37,16 @@ The Qt installation directory will be referred to as {QTDIR}.
 SAM-BA can be built either using command-line commands or using Qt Creator.
 
 ### Using command line
+
+#### Cross-compile for raspberry pi
+
+1. Edit `env.sh` to reflect your configuration
+
+2. Configure your raspberry pi for ssh access from the x86_64 host
+
+3. Run `sudo ./setup.sh` from the root of the repo
+
+  The setup will install the dependencies for building sam-ba, and also the cross-compile toolchain for raspberry pi. The system will cross-compile sam-ba and deploy it to the raspberry pi targeted in `env.sh`.
 
 #### Linux
 
