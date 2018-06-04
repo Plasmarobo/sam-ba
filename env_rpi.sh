@@ -15,7 +15,7 @@ export PI_HOSTNAME=austenflasher.local
 export PI_USERNAME=pi
 
 
-export QTRPI_QT_VERSION='5.7.0'
-export QTRPI_TARGET_DEVICE='linux-rpi3-g++'
+export QTRPI_QT_VERSION=5.10
+export QTRPI_TARGET_DEVICE=linux-rasp-pi3-g++
 export QTRPI_TARGET_HOST="$PI_USERNAME@$PI_HOSTNAME"
 
