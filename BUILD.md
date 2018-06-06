@@ -38,31 +38,21 @@ SAM-BA can be built either using command-line commands or using Qt Creator.
 
 #### Cross-compile for raspberry pi
 
-1. Edit `env.sh` to reflect your configuration
+1. Edit `env_rpi.sh` to reflect your configuration
 
 2. Configure your raspberry pi for ssh access from the x86_64 host
 
-3. Run `sudo ./setup.sh` from the root of the repo
+3. Run `sudo ./setup_rpi.sh` from the root of the repo
 
-  The setup will install the dependencies for building sam-ba, and also the cross-compile toolchain for raspberry pi. The system will cross-compile sam-ba and deploy it to the raspberry pi targeted in `env.sh`.
+  The setup will install the dependencies for building sam-ba, and also the cross-compile toolchain for raspberry pi. The system will cross-compile qt5.10 and sam-ba and deploy them to the raspberry pi targeted in `env_rpi.sh`.
 
 #### Linux
 
-1. Checkout the source in {SRCDIR}
+1. Edit `env_x86_64.sh` to reflect your configuration
 
-2. Create directory {BUILDDIR}
+2. Run `sudo ./setup_x86_64.sh` from the root of the repo 
 
-3. (optional) Change path of J-Link SDK in
-``plugins/connection/jlink/jlink.pro``
-
-4. Go in directory {BUILDDIR} and run
-``{QTDIR}/5.9/gcc_64/bin/qmake -r {SRCDIR}/sam-ba.pro``.  This will generate
-the makefiles in {BUILDDIR} from the qmake templates in the source tree.
-
-5. Go in directory {BUILDDIR} and run
-``make INSTALL_ROOT={RELEASEDIR} install``
-
-6. The release material should now be present in {RELEASEDIR} directory.
+3. The release material should now be present in {RELEASEDIR} directory.
 
 #### Windows
 
@@ -70,21 +60,18 @@ the makefiles in {BUILDDIR} from the qmake templates in the source tree.
 
 2. Create directory {BUILDDIR}
 
-3. (optional) Change path of J-Link SDK in
-``plugins\connection\jlink\jlink.pro``
-
-4. Go in directory {BUILDDIR} and run:
+3. Go in directory {BUILDDIR} and run:
 ``{QTDIR}\5.9\mingw53_32\bin\qmake -r {SRCDIR}\sam-ba.pro``.  This will
 generate the makefiles in {BUILDDIR} from the qmake templates in the source
 tree.
 
-5. Add MingW32 directory to path:
+4. Add MingW32 directory to path:
 ``set path=%path%;{QTDIR}\Tools\mingw53_32\bin``
 
-6. Go in directory {BUILDDIR} and run:
+5. Go in directory {BUILDDIR} and run:
 ``mingw32-make INSTALL_ROOT={RELEASEDIR} install``
 
-7. The release material should now be present in {RELEASEDIR} directory.
+6. The release material should now be present in {RELEASEDIR} directory.
 
 
 ### Using Qt Creator
