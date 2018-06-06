@@ -6,16 +6,6 @@ apt-get install -y git-core build-essential qt5-default libqt5serialport5-dev qt
 git clone https://github.com/raspberrypi/tools.git --depth=1
 git clone https://github.com/raspberrypi/firmware.git --depth=1
 
-TOOLCHAIN=gcc-linaro-arm-linux-gnueabihf-raspbian-x64
-CROSS_COMPILE_PATH=$PWD/tools/arm-bcm2708/$TOOLCHAIN/bin/arm-linux-gnueabihf-
-TOOLS_PATH=$PWD/tools/arm-bcm2708/$TOOLCHAIN/arm-linux-gnueabihf
-OUTPUT_PATH=$PWD/qt5pi
-HOST_QT_PATH=$PWD/qt5
-DEPLOY_PATH=/usr/local/
-RPI_SYSROOT=$PWD/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/arm-linux-gnueabihf/sysroot
-RPI_CROSS_COMPILER=$PWD/qtbase/qmake/qmake
-export QML2_IMPORT_PATH=$PWD/qt5/
-
 mkdir -p $OUTPUT_PATH
 mkdir -p $HOST_QT_PATH
 
