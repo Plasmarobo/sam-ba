@@ -6,19 +6,15 @@ apt-get install -y git-core build-essential qt5-default libqt5serialport5-dev qt
 git clone https://github.com/raspberrypi/tools.git --depth=1
 git clone https://github.com/raspberrypi/firmware.git --depth=1
 
-#TOOLCHAIN=arm-linux-gnueabihf
 TOOLCHAIN=gcc-linaro-arm-linux-gnueabihf-raspbian-x64
 CROSS_COMPILE_PATH=$PWD/tools/arm-bcm2708/$TOOLCHAIN/bin/arm-linux-gnueabihf-
 TOOLS_PATH=$PWD/tools/arm-bcm2708/$TOOLCHAIN/arm-linux-gnueabihf
 OUTPUT_PATH=$PWD/qt5pi
 HOST_QT_PATH=$PWD/qt5
 DEPLOY_PATH=/usr/local/
-
-#wget -nc https://raw.githubusercontent.com/riscv/riscv-poky/priv-1.10/scripts/sysroot-relativelinks.py
-#chmod +x sysroot-relativelinks.py
-#./sysroot-relativelinks.py $TOOLS_PATH/sysroot
-
 RPI_SYSROOT=$PWD/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/arm-linux-gnueabihf/sysroot
+RPI_CROSS_COMPILER=$PWD/qtbase/qmake/qmake
+export QML2_IMPORT_PATH=$PWD/qt5/
 
 mkdir -p $OUTPUT_PATH
 mkdir -p $HOST_QT_PATH
@@ -37,8 +33,6 @@ make -j$(nproc)
 make install
 popd
 
-export RPI_CROSS_COMPILER=$PWD/qtbase/qmake/qmake
-
 git clone git://code.qt.io/qt/qtdeclarative.git -b $QTRPI_QT_VERSION
 pushd qtdeclarative
 $RPI_CROSS_COMPILER . 
@@ -52,8 +46,6 @@ $RPI_CROSS_COMPILER .
 make -j$(nproc)
 make install
 popd
-
-export QML2_IMPORT_PATH=$PWD/qt5/
 
 mkdir -p $BUILD_DIR
 mkdir -p $RELEASE_DIR
