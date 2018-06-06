@@ -45,9 +45,9 @@ $RPI_CROSS_COMPILER -r $DIR/sam-ba.pro
 make INSTALL_ROOT=$RELEASE_DIR -j$(nproc) install
 popd
 
-cat ./deploy_rpi.sh | ssh $PI_USERNAME@$PI_HOSTNAME
+cat ./deploy_rpi.sh | ssh $QTRPI_TARGET_HOST
 
-rsync -avz $OUTPUT_PATH $PI_USERNAME@$PI_HOSTNAME:$DEPLOY_PATH
-rsync -rvL $RELEASE_DIR/ $PI_USERNAME@$PI_HOSTNAME:$PI_INSTALL_DIR
+rsync -avz $OUTPUT_PATH $QTRPI_TARGET_HOST:$DEPLOY_PATH
+rsync -rvL $RELEASE_DIR/ $QTRPI_TARGET_HOST:$PI_INSTALL_DIR
 
-ssh $PI_USERNAME@$PI_HOSTNAME 'sudo ldconfig'
+ssh $QTRPI_TARGET_HOST 'sudo ldconfig'
