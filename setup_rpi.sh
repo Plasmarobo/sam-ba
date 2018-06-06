@@ -12,6 +12,7 @@ CROSS_COMPILE_PATH=$PWD/tools/arm-bcm2708/$TOOLCHAIN/bin/arm-linux-gnueabihf-
 TOOLS_PATH=$PWD/tools/arm-bcm2708/$TOOLCHAIN/arm-linux-gnueabihf
 OUTPUT_PATH=$PWD/qt5pi
 HOST_QT_PATH=$PWD/qt5
+DEPLOY_PATH=/usr/local/
 
 #wget -nc https://raw.githubusercontent.com/riscv/riscv-poky/priv-1.10/scripts/sysroot-relativelinks.py
 #chmod +x sysroot-relativelinks.py
@@ -28,8 +29,9 @@ git clone git://code.qt.io/qt/qtbase.git -b $QTRPI_QT_VERSION
 pushd qtbase
 ./configure -release -opengl es2 -device $QTRPI_TARGET_DEVICE \
 -device-option CROSS_COMPILE=$CROSS_COMPILE_PATH -sysroot $RPI_SYSROOT \
--opensource -confirm-license -make libs -prefix /usr/local/qt5pi \
--hostprefix $HOST_QT_PATH -extprefix $OUTPUT_PATH -v -no-use-gold-linker -nomake tests
+-opensource -confirm-license -make libs -prefix $DEPLOY_PATH/qt5pi \
+-hostprefix $HOST_QT_PATH -extprefix $OUTPUT_PATH -v -no-use-gold-linker \
+-optimized-qmake -reduce-exports -make libs
 
 make -j$(nproc)
 make install
@@ -37,17 +39,17 @@ popd
 
 export RPI_CROSS_COMPILER=$PWD/qtbase/qmake/qmake
 
-git clone git://code.qt.io/qt/qtdeclarative.git
+git clone git://code.qt.io/qt/qtdeclarative.git -b $QTRPI_QT_VERSION
 pushd qtdeclarative
 $RPI_CROSS_COMPILER . 
-make -j$(nproc) -skip tests
+make -j$(nproc)
 make install
 popd
 
-git clone git://code.qt.io/qt/qtserialport.git
+git clone git://code.qt.io/qt/qtserialport.git -b $QTRPI_QT_VERSION
 pushd qtserialport
 $RPI_CROSS_COMPILER . 
-make -j$(nproc) -skip tests
+make -j$(nproc)
 make install
 popd
 
@@ -61,6 +63,19 @@ $RPI_CROSS_COMPILER -r $DIR/sam-ba.pro
 make INSTALL_ROOT=$RELEASE_DIR -j$(nproc) install
 popd
 
-rsync -rvL $OUTPUT_PATH $PI_USERNAME@$PI_HOSTNAME:/usr/local/qt5pi
+ssh $PI_USERNAME@$PI_HOSTNAME "sudo mkdir /usr/local/qt5pi ; sudo chown -R ${PI_USERNAME}:users /usr/local/qt5pi"
+ssh $PI_USERNAME@$PI_HOSTNAME 'sudo apt-get install -y apt-transport-https'
+ssh $PI_USERNAME@$PI_HOSTNAME 'sudo apt-get install -y libts-0.0-0 libinput5 fontconfig'
+ssh $PI_USERNAME@$PI_HOSTNAME "sudo sh -c 'echo /usr/local/qt5pi/lib > /etc/ld.so.conf.d/99-qt5pi.conf'"
+
+    # to fix which version of libEGL should be picked by Qt applications (/opt/vc rather than /usr/lib/....)
+ssh $PI_USERNAME@$PI_HOSTNAME "sudo sh -c 'rm /usr/lib/arm-linux-gnueabihf/libEGL.so.1.0.0 /usr/lib/arm-linux-gnueabihf/libGLESv2.so.2.0.0'"
+ssh $PI_USERNAME@$PI_HOSTNAME "sudo sh -c 'ln -sf /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so.1.0.0'"
+ssh $PI_USERNAME@$PI_HOSTNAME "sudo sh -c 'ln -sf /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so.1'"
+ssh $PI_USERNAME@$PI_HOSTNAME "sudo sh -c 'ln -sf /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so.2.0.0'"
+ssh $PI_USERNAME@$PI_HOSTNAME "sudo sh -c 'ln -sf /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so.2'"
+
+rsync -avz $OUTPUT_PATH $PI_USERNAME@$PI_HOSTNAME:$DEPLOY_PATH
 rsync -rvL $RELEASE_DIR/ $PI_USERNAME@$PI_HOSTNAME:$PI_INSTALL_DIR
 
+ssh $PI_USERNAME@$PI_HOSTNAME 'sudo ldconfig'
