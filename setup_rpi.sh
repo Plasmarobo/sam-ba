@@ -63,17 +63,7 @@ $RPI_CROSS_COMPILER -r $DIR/sam-ba.pro
 make INSTALL_ROOT=$RELEASE_DIR -j$(nproc) install
 popd
 
-ssh $PI_USERNAME@$PI_HOSTNAME "sudo mkdir /usr/local/qt5pi ; sudo chown -R ${PI_USERNAME}:users /usr/local/qt5pi"
-ssh $PI_USERNAME@$PI_HOSTNAME 'sudo apt-get install -y apt-transport-https'
-ssh $PI_USERNAME@$PI_HOSTNAME 'sudo apt-get install -y libts-0.0-0 libinput5 fontconfig'
-ssh $PI_USERNAME@$PI_HOSTNAME "sudo sh -c 'echo /usr/local/qt5pi/lib > /etc/ld.so.conf.d/99-qt5pi.conf'"
-
-    # to fix which version of libEGL should be picked by Qt applications (/opt/vc rather than /usr/lib/....)
-ssh $PI_USERNAME@$PI_HOSTNAME "sudo sh -c 'rm /usr/lib/arm-linux-gnueabihf/libEGL.so.1.0.0 /usr/lib/arm-linux-gnueabihf/libGLESv2.so.2.0.0'"
-ssh $PI_USERNAME@$PI_HOSTNAME "sudo sh -c 'ln -sf /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so.1.0.0'"
-ssh $PI_USERNAME@$PI_HOSTNAME "sudo sh -c 'ln -sf /opt/vc/lib/libEGL.so /usr/lib/arm-linux-gnueabihf/libEGL.so.1'"
-ssh $PI_USERNAME@$PI_HOSTNAME "sudo sh -c 'ln -sf /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so.2.0.0'"
-ssh $PI_USERNAME@$PI_HOSTNAME "sudo sh -c 'ln -sf /opt/vc/lib/libGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so.2'"
+cat ./deploy_rpi.sh | ssh $PI_USERNAME@$PI_HOSTNAME
 
 rsync -avz $OUTPUT_PATH $PI_USERNAME@$PI_HOSTNAME:$DEPLOY_PATH
 rsync -rvL $RELEASE_DIR/ $PI_USERNAME@$PI_HOSTNAME:$PI_INSTALL_DIR
